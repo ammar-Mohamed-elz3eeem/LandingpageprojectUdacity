@@ -150,15 +150,10 @@ nav ul li a {
   display: flex;
   justify-content: flex-end;
 }
-.right-col .search-box {
-  width: 50px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f1f1f1;
+.right-col .mobile-icon {
+  display: none;
 }
-.right-col .search-box span {
+.right-col .mobile-icon span {
   font-weight: 800;
 }
 .bg-image {
@@ -253,6 +248,10 @@ button span.icon {
   color: white;
   margin-right: 10px;
 }
+button span.icon img {
+  width: 16px;
+  height: 16px;
+}
 button span.btn-text {
   font-size: 23px;
   font-family: "HelveticaLTStdCond";
@@ -294,7 +293,10 @@ button span.btn-text {
   font-family: "HelveticaLTStdCond";
   position: relative;
 }
-
+.view-all-icon svg {
+  border: 1px solid #222;
+  padding: 3px 2px;
+}
 /* Styles for Select */
 
 /* /// END DECORATION CSS /// */
@@ -499,7 +501,7 @@ input {
   font-size: 23px;
   padding-left: 15px;
 }
-section.footer {
+footer.footer {
   background-color: #222;
 }
 .footer .social-icons ul {
@@ -513,6 +515,36 @@ section.footer {
 .footer .social-icons ul li a {
   text-decoration: none;
   color: #707070;
+}
+.up {
+  animation: hideMenu 1s ease-in-out;
+}
+.down {
+  animation: showMenu 1s ease-in-out;
+}
+@media only screen and (max-width: 1280px) {
+  ul.nav-menu {
+    display: none;
+  }
+  ul.nav-menu.mobile-nav {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #222;
+  }
+  ul.nav-menu.mobile-nav li {
+    background-color: #222;
+  }
+  .right-col div.mobile-icon {
+    display: flex;
+    width: 50px;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: #f1f1f1;
+  }
 }
 @media only screen and (max-width: 1024px) {
   .row.order-by-filters {
@@ -561,5 +593,21 @@ section.footer {
   }
   100% {
     opacity: 1;
+  }
+}
+@keyframes showMenu {
+  0% {
+    transform: translateY(-1000px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+@keyframes hideMenu {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-1000px);
   }
 }

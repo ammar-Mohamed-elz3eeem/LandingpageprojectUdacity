@@ -1,6 +1,8 @@
 let header = document.getElementById("navbar");
-let sections = [...document.querySelectorAll("section")].slice(1, -1);
+let sections = [...document.querySelectorAll("section")];
 let navMenus = document.querySelector(".nav-links .nav-menu");
+let toggleBtn = document.querySelector(".right-col .mobile-icon");
+let mobileNavMenu = document.querySelector("header ul");
 /**
  * Helper functions to get the id from the link href
  * @param {str} string to remove the hashtag from
@@ -18,10 +20,9 @@ function hash(str) {
 function isInViewport(sections) {
   let scrollPs = document.documentElement.scrollTop;
   sections.forEach((section) => {
-    if (
-      section.offsetTop <= scrollPs &&
-      scrollPs < section.offsetTop + section.offsetHeight
-    ) {
+    if (section.offsetTop <= scrollPs) {
+      [...sections].map(section.classList.remove("active"));
+      section.classList.add("active");
       [...navMenus.children].map((listItem) =>
         listItem.classList.remove("active")
       );
@@ -33,23 +34,27 @@ function isInViewport(sections) {
 }
 
 /**
+ * Function the Toggle menu to make it work on screens below 1280px
+ */
+function toggleMenu() {
+  mobileNavMenu.classList.toggle("mobile-nav");
+}
+
+/**
  * for loop to add the li's to the ul element
  */
-let t0 = performance.now();
 let frangment = document.createDocumentFragment();
-for (let i = 0; i < 6; i++) {
+for (let section of sections) {
   let listItem = document.createElement("li");
-  listItem.setAttribute("data-nav", sections[i].getAttribute("id"));
-  listItem.innerHTML = `<a href="#${sections[i].getAttribute("id")}">${
-    sections[i].dataset.title
-  }</a>`;
+  let link = document.createElement("a");
+  link.textContent = section.dataset.title;
+  link.href = `#${section.getAttribute("id")}`;
+  listItem.appendChild(link);
+  listItem.setAttribute("data-nav", section.getAttribute("id"));
   frangment.appendChild(listItem);
 }
 navMenus.appendChild(frangment);
 // console.log(frangment);
-let t1 = performance.now();
-console.log(t1 - t0);
-
 /**
  * addEventListener to toggle the class fixed and absolute to make the header appear on scroll
  */
@@ -80,7 +85,12 @@ navMenus.addEventListener(
       document
         .getElementById(hash(location))
         .scrollIntoView({ behavior: "smooth" });
+      // mobileNavMenu.classList.remove("mobile-nav");
     }
   },
   true
 );
+/**
+ * Add event to fire the click on the mobile menu button to toggle the menu
+ */
+toggleBtn.addEventListener("click", toggleMenu);
