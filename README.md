@@ -5,7 +5,7 @@
 - [Description](#description)
 - [Installition](#installition)
 - [Project Files](#Project-files)
-- [Technologies](#technologies)
+- [Technologies](#Technologies-used-in-the-Project)
 - [Author](#Author)
 - [License](#License)
 
