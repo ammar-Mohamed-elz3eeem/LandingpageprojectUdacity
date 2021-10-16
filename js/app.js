@@ -3,6 +3,7 @@ let sections = [...document.querySelectorAll("section")];
 let navMenus = document.querySelector(".nav-links .nav-menu");
 let toggleBtn = document.querySelector(".right-col .mobile-icon");
 let mobileNavMenu = document.querySelector("header ul");
+
 /**
  * Helper functions to get the id from the link href
  * @param {str} string to remove the hashtag from
@@ -12,26 +13,6 @@ function hash(str) {
   return str.slice(str.lastIndexOf("#") + 1);
 }
 // console.log(sections);
-
-/**
- * Cheek if Section is in viewPort or not
- * @param {sections} array to loop through and check if section is inViewPort or not
- */
-function isInViewport(sections) {
-  let scrollPs = document.documentElement.scrollTop;
-  sections.forEach((section) => {
-    if (section.offsetTop <= scrollPs) {
-      [...sections].map(section.classList.remove("active"));
-      section.classList.add("active");
-      [...navMenus.children].map((listItem) =>
-        listItem.classList.remove("active")
-      );
-      document
-        .querySelector(`li[data-nav="${section.getAttribute("id")}"]`)
-        .classList.add("active");
-    }
-  });
-}
 
 /**
  * Function the Toggle menu to make it work on screens below 1280px
@@ -81,10 +62,17 @@ navMenus.addEventListener(
       );
       e.target.parentElement.classList.add("active");
       let location = e.target.href;
-      console.log(document.getElementById(hash(location)));
+      sections.forEach((section) => {
+        section.classList.remove("active");
+        // console.log(
+        //   section.getAttribute("id") === location.slice(0, -1) && section
+        // );
+      });
+
+      // console.log(document.getElementById(hash(location)));
       document
         .getElementById(hash(location))
-        .scrollIntoView({ behavior: "smooth" });
+        .scrollIntoView({ behavior: "smooth", block: "start" });
       // mobileNavMenu.classList.remove("mobile-nav");
     }
   },
@@ -94,3 +82,27 @@ navMenus.addEventListener(
  * Add event to fire the click on the mobile menu button to toggle the menu
  */
 toggleBtn.addEventListener("click", toggleMenu);
+/**
+ * Cheek if Section is in viewPort or not
+ * @param {sections} array to loop through and check if section is inViewPort or not
+ */
+
+function isInViewport(sections) {
+  let scrollPs = document.documentElement.scrollTop;
+  // console.log(scrollPs);
+  sections.forEach((section) => {
+    if (
+      scrollPs >= section.offsetTop - 50 &&
+      scrollPs < section.getBoundingClientRect().height + section.offsetTop
+    ) {
+      sections.forEach((section) => section.classList.remove("active"));
+      section.classList.add("active");
+      [...navMenus.children].forEach((listItem) =>
+        listItem.classList.remove("active")
+      );
+      document
+        .querySelector("li[data-nav=" + section.getAttribute("id") + "]")
+        .classList.add("active");
+    }
+  });
+}
